@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp24
+{
+    public class Book
+    {
+        private string[] chapters = new string[0];
+
+       
+        public string this[int index]
+        {
+            get
+            {
+                if (index >= 0 && index < chapters.Length)
+                    return chapters[index];
+                else
+                    throw new IndexOutOfRangeException("Глава с таким индексом не существует");
+            }
+            set
+            {
+                if (index >= 0)
+                {
+                    if (index >= chapters.Length)
+                    {
+                        Array.Resize(ref chapters, index + 1);
+                    }
+                    chapters[index] = value;
+                }
+                else
+                {
+                    throw new IndexOutOfRangeException("Индекс не может быть отрицательным");
+                }
+            }
+        }
+
+      
+        public override string ToString()
+        {
+            return string.Join(Environment.NewLine,
+                chapters.Select((chapter, index) => $"{index + 1}. {chapter}")
+                        .Where(item => !string.IsNullOrEmpty(item)));
+        }
+    }
+
+    class Program
+    {
+        static void Main()
+        {
+            var book = new Book();
+            book[0] = "Введение";
+            book[1] = "Глава 1";
+
+            Console.WriteLine(book[0]);
+            Console.WriteLine(book);   
+                                       
+        }
+    }
+
+
+
+}
